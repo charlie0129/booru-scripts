@@ -68,7 +68,8 @@ Make sure `GNU make`, `curl`, `wget`,  `node`, and `yarn` are installed. Steps b
      - (recommanded) or putting `DANBOORU_APIKEY=key` in a `.env` file at repo root
 
    - **`PROXY`**: proxy to use when accessing moebooru websites (because there is no direct access in my country), e.g. `http://127.0.0.1:9999`
-     - by `export PROXY=http://yourproxy:1234`
+     - skip this if you don't need a proxy
+     - set it by `export PROXY=http://yourproxy:1234`
 
    - **`IMAGE_DIR`**: path to directory, where to store downloaded images
      - default value: `~/Pictures/${MOEBOORU_HOSTNAME}`. For example, if you set `MOEBOORU_HOST` as `https://konachan.com`, then `IMAGE_DIR` will be `~/Pictures/konachan.com`
