@@ -3,29 +3,23 @@
 Incrementally sync your favorites on [moebooru](https://github.com/moebooru/moebooru) websites to your own [danbooru](https://github.com/danbooru/danbooru) website. 
 
 
-In this repo, moebooru typically means [konachan.com](https://konachan.com) and [yande.re](https://yande.re).
+In this repo, [moebooru](https://github.com/moebooru/moebooru) typically means [konachan.com](https://konachan.com) and [yande.re](https://yande.re).
 
 增量同步你在 [moebooru](https://github.com/moebooru/moebooru) 网站上的收藏到你自己的 [danbooru](https://github.com/danbooru/danbooru) 网站。
 
-在这个仓库中，moebooru 一般指 [konachan.com](https://konachan.com) 和 [yande.re](https://yande.re).
-
-- [x] Upload original images
-- [x] Sync tags and post metadata
-- [ ] Sync metadata for tags
-- [ ] Sync parent/child relationships
-- [ ] Sync pools
+在这个仓库中，[moebooru](https://github.com/moebooru/moebooru) 一般就指 [konachan.com](https://konachan.com) 和 [yande.re](https://yande.re)。
 
 ## Use-case 案例
 
 As computer nerds and anime/manga art lovers,  everyone wants their favorite images on moebooru to be stored locally, so that we can appreciate them later. However, if you just download them to you hard drive, there are no longer tags (a big feature in image boards like moebooru) holding the images together. With no tags, you will have a hard time finding related images by tags. Also, viewing the large original files is a suboptimal experience, especially for mobile devices. 
 
-Even when you try to use some photo-managing software to organize the images, tagging all those images is still a pain in the ass.
+Even when you try to use some photo-managing software to organize the images (e.g. use Apple Photos and AppleScript to automate image-tagging), tagging all those images is still a pain in the ass, let alone the experience is still behind *booru for this purpose.
 
 Why not self-hosting a [danbooru](https://github.com/danbooru/danbooru) instance and use this script to sync your favorite images on moebooru to your own website! You will have the same experience as moebooru websites with all the advantages of self-hosted websites. (since moebooru is a fork from danbooru, they are similar.)
 
-作为计算机折腾人士和动画/漫画作品爱好者，许多人都希望他们在 moebooru 上的收藏下载到本地，方便以后欣赏。但是如果我们之间下载这些图片到电脑，那么维持这些图片之间的关系的图片 tag 就没了（这是 moebooru 这些 image boards 的最大的特点）。没有了 tag，那通过 tag 寻找相关图片就很难受了，而且查看这些巨大的原图体验也不好，尤其对于移动设备来说。
+作为计算机折腾人士和 anime/manga 作品爱好者，谁不希望能把在 moebooru 上的<sub>~~大量~~</sub>收藏<sub>~~的涩图~~</sub>下载到本地，方便以后~~欣赏~~呢？但是如果我们直接下载这些图片到电脑，那么维持这些图片之间的关系的图片 tag 就没了（这是 moebooru 这些 image boards 的最大的特点）。没有了 tag，那通过 tag 寻找相关图片就很难受了<sub>~~能快速找到同类型/画师/主角的涩图可是一大享受啊~~</sub>，而且查看这些体积巨大的原图体验也不好（载入慢还烧流量），尤其对于移动设备来说。
 
-就算你想用照片管理工具来管理这些图片，给这么多图片打标签也是很~~操蛋~~的。
+就算你想用照片管理工具来管理这些图片（例如用 Apple Photos 并且用 AppleScript 来自动化打标签），给这么多图片打标签写脚本也是~~无比操蛋~~的，而且对于这种用途来说使用体验比不上 *booru。
 
 为什么不自建一个 [danbooru](https://github.com/danbooru/danbooru) 实例，然后用这个脚本来同步你在 moebooru 上的收藏到你自己的网站呢！你仍然会拥有与在 moebooru 网站相同的体验，同时又有自建网站的所有优势。（moebooru 是 danbooru 的 fork，它们差不多）
 
@@ -37,9 +31,9 @@ Since there is no direct access to moebooru websites like [konachan.com](https:/
 
 因为众所周知的网络原因，我们无法直接访问 [konachan.com](https://konachan.com) 和 [yande.re](https://yande.re)，所以脚本需要先下载图片，而不是让自建的 danbooru 直接去获取图片。
 
-Screenshot of a self-hosting danbooru instance, with metadata of posts synced (e.g. tags):
+Screenshot of a self-hosting danbooru instance, with metadata of posts synced (see [todo](#TODO) for supported metadata):
 
-自建 danbooru 实例的截图，图片元数据已同步（如标签等）：
+自建 danbooru 实例的截图，图片元数据已同步（如左边的标签，支持的元数据见 [todo](#TODO)）：
 
 ![danbooru-screenshot](readme-assets/danbooru-screenshot.jpg)
 
@@ -83,3 +77,10 @@ Make sure `GNU make`, `curl`, `wget`,  `node`, and `yarn` are installed. Steps b
    - Run `make get_favorites_and_sync_to_danbooru` to download and sync your favorites to self-hosted danbooru.
 
    - <p style="color: grey;">More actions will be added later after some testing...</p>
+
+## TODO
+
+- [x] Sync images, tags, rating, and source
+- [ ] Sync metadata for tags
+- [ ] Sync parent/child relationships
+- [ ] Sync pools
