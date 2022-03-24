@@ -1,12 +1,13 @@
 # booru-scripts
 
-Incrementally sync your favorites on moebooru websites to your own danbooru website. 
+Incrementally sync your favorites on [moebooru](https://github.com/moebooru/moebooru) websites to your own [danbooru](https://github.com/danbooru/danbooru) website. 
 
-增量同步你在 moebooru 网站上的收藏到你自己的 [danbooru](https://github.com/danbooru/danbooru) 网站。
 
 In this repo, moebooru typically means [konachan.com](https://konachan.com) and [yande.re](https://yande.re).
 
-在这个仓库中，moebooru 通常指 [konachan.com](https://konachan.com) 和 [yande.re](https://yande.re).
+增量同步你在 [moebooru](https://github.com/moebooru/moebooru) 网站上的收藏到你自己的 [danbooru](https://github.com/danbooru/danbooru) 网站。
+
+在这个仓库中，moebooru 一般指 [konachan.com](https://konachan.com) 和 [yande.re](https://yande.re).
 
 - [x] Upload original images
 - [x] Sync tags and post metadata
@@ -75,4 +76,7 @@ Make sure `GNU make`, `curl`, `wget`,  `node`, and `yarn` are installed. Steps b
 
 
 2. Start syncing 开始同步
+
    - Run `make get_favorites_and_sync_to_danbooru` to download and sync your favorites to self-hosted danbooru.
+
+   - <p style="color: grey;">More actions will be added later after some testing...</p>
