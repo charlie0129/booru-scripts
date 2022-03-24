@@ -3,11 +3,16 @@
 # make <target> MOEBOORU_HOST=yande.re
 # or just set env variable MOEBOORU_HOST=yande.re
 export MOEBOORU_HOST
-MOEBOORU_HOSTNAME=$(shell node -e 'const{exit}=require("process");const u="$(MOEBOORU_HOST)";if(u)console.log(new URL(u).hostname);else{console.error("MOEBOORU_HOST not set");exit(1);}')
+MOEBOORU_HOSTNAME=$(shell node util/get-hostname-from-url.js $(MOEBOORU_HOST))
 
 
 # Your directory to store your images (separated by hostname)
-IMAGE_DIR=/Users/$(USER)/Pictures/$(MOEBOORU_HOSTNAME)
+ifdef IMAGE_DIR
+IMAGE_DIR=$(IMAGE_DIR)
+else
+IMAGE_DIR=$(HOME)/Pictures/$(MOEBOORU_HOSTNAME)
+endif
+
 
 # Moebooru username to get your favoirite
 # you should set this from thr command line, like this
