@@ -1,0 +1,1 @@
+Check uploaded images from posted.json/uploaded.json, instead of directory listing. This will allow deleting local files after uploading.
