@@ -37,9 +37,9 @@ Since there is no direct access to moebooru websites like [konachan.com](https:/
 
 因为众所周知的网络原因，我们无法直接访问 [konachan.com](https://konachan.com) 和 [yande.re](https://yande.re)，所以脚本需要先下载图片，而不是让自建的 danbooru 直接去获取图片。
 
-Screenshot of a self-hosting danbooru instance:
+Screenshot of a self-hosting danbooru instance, with metadata of posts synced (e.g. tags):
 
-自建 danbooru 实例的截图：
+自建 danbooru 实例的截图，图片元数据已同步（如标签等）：
 
 ![danbooru-screenshot](readme-assets/danbooru-screenshot.jpg)
 
