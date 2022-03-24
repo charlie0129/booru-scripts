@@ -33,7 +33,9 @@ This script will first download the original images and metadata of your favorit
 
 这个脚本会先下载你在 moebooru 上收藏的原图，然后会用下载的图片和元数据在你自己的 danbooru 网站上创建 posts。
 
-The reason why I download the images first is that I cannot directly access the moebooru websites in my country. I have to use a proxy on my computer 
+Since there is no direct access to moebooru websites like [konachan.com](https://konachan.com) or [yande.re](https://yande.re) in my country, the script will download the images first (proxy configurable) and then upload them to self-host danbooru instance. Otherwise the self-hosted danbooru instance is able to directly fetch them.
+
+因为众所周知的网络原因，我们无法直接访问 [konachan.com](https://konachan.com) 和 [yande.re](https://yande.re)，所以脚本需要先下载图片，而不是让自建的 danbooru 直接去获取图片。
 
 Screenshot of a self-hosting danbooru instance:
 
