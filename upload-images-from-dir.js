@@ -1,5 +1,5 @@
 // upload all the images from a directory to your danbooru instance, metadata will be read from your favorites.json file
-// you should get your metadata first by running get-user-favorites-delta/full.js
+// you should get your metadata first by running get-user-favorites-delta/all.js
 
 const axios = require('axios').default
 var FormData = require('form-data');
@@ -13,7 +13,7 @@ const exec = promisify(require('child_process').exec);
 require('dotenv').config();
 
 if (!process.argv[2]) {
-    console.error('Host required! I need to know where the images in the directory are from. So that I can find the metadata in your favorites.json file.');
+    console.error('Moebooru host required! I need the metadata in your <host>-favorites.json file. But I cannot find it without the moebooru hostname.');
     exit(1)
 }
 const host = new URL(process.argv[2])
@@ -72,7 +72,7 @@ const posted = JSON.parse(fs.readFileSync(postedFilePath));
 // id mappings
 const mapping = JSON.parse(fs.readFileSync(mappingFilePath));
 // favorite images
-const favorites = JSON.parse(fs.readFileSync(`${host.hostname}-favorites.json`));
+const favorites = JSON.parse(fs.readFileSync(path.join('data', `${host.hostname}-favorites.json`)));
 
 function saveProgress() {
     console.log("saving progress...");
@@ -167,7 +167,7 @@ async function startUploading() {
 
         let uploadId = uploaded[file.id]
         if (!uploadId) {
-            await upLoadImage({ filePath: file.filePath, originalId: file.id });
+            uploadId = await upLoadImage({ filePath: file.filePath, originalId: file.id });
         }
 
         let postId = posted[file.id]

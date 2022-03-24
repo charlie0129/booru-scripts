@@ -7,21 +7,21 @@ const { promisify } = require('util');
 const exec = promisify(require('child_process').exec);
 
 if (!process.argv[2]) {
-    console.error('Host required! I need to know where to get your favorites from.');
+    console.error('Moebooru host required! I need to know where to get your favorites from.');
     console.error('Example: https://konachan.com');
     exit(1)
 }
 
 if (!process.argv[3]) {
-    console.error('Username required! I need to know which account to get favorites from.');
+    console.error('Moebooru username required! I need to know which account to get favorites from.');
     console.error('Example: youraccount');
     exit(1)
 }
 
-const host = URL.parse(process.argv[2]);
+const host = new URL(process.argv[2]);
 const username = process.argv[3];
 // file to store favorites in
-const filename = `data/${host}-favorites.json`;
+const filename = path.JSON('data', `${host.hostname}-favorites.json`);
 
 // make http request to get user favorites
 const getUserFavorites = async (host, username) => {

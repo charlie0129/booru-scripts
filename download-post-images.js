@@ -8,7 +8,7 @@ const exec = promisify(require('child_process').exec);
 
 if (!process.argv[2]) {
     console.error('Input JSON file required! I need to know which posts to download.');
-    console.error('Example: konachan.com-favorites-new.json');
+    console.error('Example: konachan.com-favorites-delta.json');
     console.error('It will have contents like this (simplified):', {
         '251867': {
             id: 251867,
@@ -24,10 +24,16 @@ if (!process.argv[2]) {
     exit(1)
 }
 
+// read which posts to download from json file
+const posts = JSON.parse(fs.readFileSync(process.argv[2]));
+
+if(!process.argv[3]) {
+    console.warn('Destination directory not specified. I will use the current directory.');
+}
 const destination = process.argv[3] || './';
 
 // list files in destination
-let filenames = fs.readdirSync(".").filter(file => file.match(/\d+/)).filter(filePath => filePath.endsWith(".jpg") || filePath.endsWith(".jpeg") || filePath.endsWith(".png"));
+let filenames = fs.readdirSync(destination).filter(file => file.match(/\d+/)).filter(filePath => filePath.endsWith(".jpg") || filePath.endsWith(".jpeg") || filePath.endsWith(".png"));
 const filesInDestination = {}
 filenames.forEach(filename => {
     const id = filename.match(/\d+/)[0];
@@ -39,11 +45,10 @@ filenames.forEach(filename => {
 })
 
 
-// read which posts to download
-const posts = JSON.parse(fs.readFileSync(process.argv[2]));
-
 async function downloadPosts(posts) {
-    for (const post of posts) {
+    for (const postId in posts) {
+        const post = posts[postId];
+
         // if the post is already downloaded, skip it
         if (filesInDestination[post.id]) {
             console.log('post already downloaded:', post.id);
@@ -52,9 +57,9 @@ async function downloadPosts(posts) {
 
         const imgUrl = new URL(post.file_url);
 
-        console.log("downloading", image.id, "from", imgUrl.host);
+        console.log("downloading", post.id, "from", imgUrl.host);
 
-        await exec(`cd ${destination} && wget ${image.file_url}`);
+        await exec(`cd "${destination}" && wget "${imgUrl.href}"`);
     }
 }
 
