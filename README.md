@@ -2,7 +2,7 @@
 
 Incrementally sync your favorites on moebooru websites to your own danbooru website. 
 
-增量同步你在 moebooru 网站上收藏的图片到你自己的 [danbooru](https://github.com/danbooru/danbooru) 网站。
+增量同步你在 moebooru 网站上的收藏到你自己的 [danbooru](https://github.com/danbooru/danbooru) 网站。
 
 In this repo, moebooru typically means [konachan.com](https://konachan.com) and [yande.re](https://yande.re).
 
