@@ -33,32 +33,60 @@ if(!process.argv[3]) {
 const destination = process.argv[3] || './';
 
 // list files in destination
-let filenames = fs.readdirSync(destination).filter(file => file.match(/\d+/)).filter(filePath => filePath.endsWith(".jpg") || filePath.endsWith(".jpeg") || filePath.endsWith(".png"));
 const filesInDestination = {}
-filenames.forEach(filename => {
-    const id = filename.match(/\d+/)[0];
-    filesInDestination[id] = {
-        filePath: path.format({ dir: destination, base: filename }),
-        filename: `${filename}`,
-        id,
-    };
-})
+
+function listFilesInDirectory() {
+    let filenames = fs.readdirSync(destination).filter(file => file.match(/\d+/)).filter(filePath => filePath.endsWith(".jpg") || filePath.endsWith(".jpeg") || filePath.endsWith(".png"));
+    filenames.forEach(filename => {
+        const id = filename.match(/\d+/)[0];
+        filesInDestination[id] = {
+            filePath: path.format({ dir: destination, base: filename }),
+            filename: `${filename}`,
+            id,
+        };
+    })
+}
+
+listFilesInDirectory();
+
+
+// id of the image that is currently being downloaded
+let currentDownloading;
+
+function deleteUnfinished() {
+    console.log(`deleting unfinished post ${currentDownloading}...`);
+    listFilesInDirectory();
+    // delete the file that is currently being downloaded
+    fs.unlinkSync(filesInDestination[currentDownloading].filePath);
+    console.log("done");
+}
+
+process.on('SIGINT', function () {
+    console.error("caught interrupt signal, exiting...");
+    deleteUnfinished();
+    process.exit();
+});
 
 
 async function downloadPosts(posts) {
+    const allPosts = Object.keys(posts).length;
+    console.log('downloading', allPosts, 'posts...');
+    let count = 0;
     for (const postId in posts) {
+        count++;
         const post = posts[postId];
 
         // if the post is already downloaded, skip it
         if (filesInDestination[post.id]) {
-            console.log('post already downloaded:', post.id);
+            // console.log('post already downloaded:', post.id);
             continue;
         }
 
         const imgUrl = new URL(post.file_url);
 
-        console.log("downloading", post.id, "from", imgUrl.host);
+        console.log(`${count}/${allPosts}:`,"downloading", post.id, "from", imgUrl.host);
 
+        currentDownloading = post.id;
         await exec(`cd "${destination}" && wget "${imgUrl.href}"`);
     }
 }

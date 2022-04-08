@@ -4,13 +4,14 @@ const axios = require('axios').default
 const fs = require('fs');
 const path = require('path');
 const { exit } = require('process');
-const { promisify } = require('util');
 
 if (!process.argv[2]) {
     console.error('Moebooru host required! I need to know which <host>-tags.json file to get tags.');
     console.error('Example: https://konachan.com');
     exit(1)
 }
+
+require('dotenv').config();
 
 const host = new URL(process.argv[2]).hostname;
 
@@ -28,21 +29,19 @@ if (!localHost || !username || !apiKey) {
 
 const authorization = "Basic " + Buffer.from(`${username}:${apiKey}`).toString('base64');
 
+// local danbooru instance tags
 const tags = {}
 
-if(!fs.existsSync(path.join('data', `${host}-tags.json`))) {
+if (!fs.existsSync(path.join('data', `${host}-tags.json`))) {
     console.error(`No ${host}-tags.json file found!`);
-    console.error(`You need to get it with get-tags-all.js first.`);
+    console.error(`You need to get it with get-tags-all/delta.js first.`);
     exit(1);
 }
 
-const remoteTagsOrig = JSON.parse(fs.readFileSync(path.join('data', `${host}-tags.json`)));
-const remoteTags = {}
-remoteTagsOrig.forEach(i => {
-    remoteTags[i.name] = i;
-})
+// remote moebooru tags
+const remoteTags = JSON.parse(fs.readFileSync(path.join('data', `${host}-tags.json`)));
 
-if(!fs.existsSync(path.join('data', `${host}-tags-updated.json`))) {
+if (!fs.existsSync(path.join('data', `${host}-tags-updated.json`))) {
     fs.writeFileSync(path.join('data', `${host}-tags-updated.json`), '{}');
 }
 
@@ -64,13 +63,14 @@ async function getTags() {
     for (let i = 1; ; i++) {
         console.log("getting page", i);
 
-        const res = await axios.get(`${localHost}/tags.json?limit=100&page=${i}`)
+        const res = await axios.get(`${localHost}/tags.json?limit=25&page=${i}`)
         const resTags = res.data
 
         if (resTags.length === 0) {
             console.log("no more pages");
             break;
         }
+
 
         resTags.forEach(i => {
             tags[i.name] = i;
@@ -82,11 +82,7 @@ async function getTags() {
 async function updateTag(id, type, name) {
     await axios.put(`${localHost}/tags/${id}.json`, {
         category: type <= 5 ? type : 5,
-    }, {
-        headers: {
-            authorization,
-        }
-    })
+    }, { headers: { authorization, } })
         .then(res => {
             updatedTags[name] = type;
         })
@@ -103,7 +99,7 @@ async function updateTag(id, type, name) {
         const remoteTag = remoteTags[i];
 
         if (!remoteTag || !tag) {
-            console.error(`${tag.name}: not found on remote, skipping`);
+            process.stderr.write('\033[33m' + tag.name + '\033[0m: not found on remote, skipping\n')
             continue;
         }
 

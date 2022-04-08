@@ -8,6 +8,7 @@ const path = require('path');
 const { exit } = require('process');
 const { URL } = require('url');
 const { promisify } = require('util');
+const { isValidHttpUrl } = require('./util/check-valid-url');
 const exec = promisify(require('child_process').exec);
 
 require('dotenv').config();
@@ -98,7 +99,7 @@ async function upLoadImage({ filePath, originalId }) {
         form.append("upload[files][0]", fs.createReadStream(filePath));
         const response = await axios({
             method: 'post',
-            url: `${localHost}/uploads.json`,
+            url: `${localHost}uploads.json`,
             data: form,
             headers: {
                 'Content-Type': `multipart/form-data; boundary=${form._boundary}`,
@@ -113,11 +114,11 @@ async function upLoadImage({ filePath, originalId }) {
         }
 
         uploaded[originalId] = response.data.id;
-        process.stdout.write(`uploadId=${response.data.id} `);
+        process.stdout.write('uploadId=\033[33m' + response.data.id + '\033[0m ');
         return response.data.id;
     } catch (error) {
         console.error(error);
-        console.error(`${originalId}: upload failed`);
+        console.error('\033[33m' + originalId + '\033[0m: upload failed\n');
         saveProgress();
         exit(1);
     }
@@ -132,14 +133,25 @@ async function postImage({ uploadId, originalId, originalFilename }) {
             throw new Error(`${originalId}: no post metadata found locally in favorites.json`);
         }
 
+        let source = post.source;
+        // if source is not a http url
+        if (!isValidHttpUrl(post.source)) {
+            // if general string, remove dots in it (as dots will cause problems with danbooru)
+            source = source.replaceAll('.', '');
+            // if empty string, replace it to file name
+            if (!source) {
+                source = `file://${originalFilename}`;
+            }
+        }
+
         const form = new FormData();
         form.append("upload_media_asset_id", uploadId);
-        form.append("post[source]", post.source ? post.source : `file://${originalFilename}`);
+        form.append("post[source]", source);
         form.append("post[rating]", post.rating);
         form.append("post[tag_string]", post.tags);
 
         const response = await axios.post(
-            `${localHost}/posts`,
+            `${localHost}posts`,
             form, {
             headers: {
                 authorization,
@@ -148,14 +160,14 @@ async function postImage({ uploadId, originalId, originalFilename }) {
         });
 
         const postId = response.data.match(/posts\/\d+/)[0].match(/\d+/)[0];
-        process.stdout.write(`postId=${postId}\n`);
+        process.stdout.write('postId=\033[33m' + postId + '\033[0m\n');
         posted[originalId] = postId;
         mapping[originalId] = postId;
 
         return postId;
     } catch (error) {
         console.error(error);
-        console.error(`${originalId}: post failed, with uploadId=${uploadId}`);
+        console.error('\033[33m' + originalId + '\033[0m: post failed, with uploadId=\033[33m' + uploadId + '\033[0m\n');
         saveProgress();
         exit(1);
     }
@@ -163,7 +175,7 @@ async function postImage({ uploadId, originalId, originalFilename }) {
 
 async function startUploading() {
     for (const file of files) {
-        process.stdout.write(`${file.id}: `);
+        process.stdout.write('\033[33m' + file.id + '\033[0m: ');
 
         let uploadId = uploaded[file.id]
         if (!uploadId) {

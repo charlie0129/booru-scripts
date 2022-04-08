@@ -52,7 +52,7 @@ const getUserFavorites = async (host, username) => {
             // we use curl instead of axios here is to avoid the issue of proxies
             // since i cannot get axios to work with proxies
             // specifically, axios does not support https traffic over http proxies
-            const ret = await exec(`curl -s -H "Accept: application/json" -H "Content-Type: application/json" -X GET "${host.href}post.json?limit=100&tags=vote:3:${username}%20order:vote&page=${i}"`);
+            const ret = await exec(`curl -s -H "Accept: application/json" -H "Content-Type: application/json" -X GET "${host.href}post.json?limit=25&tags=vote:3:${username}%20order:vote&page=${i}"`);
             const response = JSON.parse(ret.stdout)
 
             if (response.length === 0) {

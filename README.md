@@ -13,7 +13,7 @@ In this repo, [moebooru](https://github.com/moebooru/moebooru) typically means [
 
 As computer nerds and anime/manga art lovers,  everyone wants their favorite images on moebooru to be stored locally, so that we can appreciate them later. However, if you just download them to you hard drive, there are no longer tags (a big feature in image boards like moebooru) holding the images together. With no tags, you will have a hard time finding related images by tags. Also, viewing the large original files is a suboptimal experience, especially for mobile devices. 
 
-Even when you try to use some photo-managing software to organize the images (e.g. use Apple Photos and AppleScript to automate image-tagging), tagging all those images is still a pain in the ass, let alone the experience is still behind *booru for this purpose.
+Even when you try to use some photo-management software to organize the images (e.g. use Apple Photos and AppleScript to automate image-tagging), tagging all those images is still a pain in the ass, let alone the experience is still behind *booru for this purpose.
 
 Why not self-hosting a [danbooru](https://github.com/danbooru/danbooru) instance and use this script to sync your favorite images on moebooru to your own website! You will have the same experience as moebooru websites with all the advantages of self-hosted websites. (since moebooru is a fork from danbooru, they are similar.)
 
@@ -27,9 +27,9 @@ This script will first download the original images and metadata of your favorit
 
 这个脚本会先下载你在 moebooru 上收藏的原图，然后会用下载的图片和元数据在你自己的 danbooru 网站上创建 posts。
 
-Since there is no direct access to moebooru websites like [konachan.com](https://konachan.com) or [yande.re](https://yande.re) in my country, the script will download the images first (proxy configurable) and then upload them to self-host danbooru instance. Otherwise the self-hosted danbooru instance is able to directly fetch them.
+Since there is no direct access to moebooru websites like [konachan.com](https://konachan.com) or [yande.re](https://yande.re) in my country, the script will download the images first (proxy configurable) and then upload them to self-host danbooru instance. Otherwise the self-hosted danbooru instance is able to directly fetch them (although the danbooru instance is able to use a proxy).
 
-因为众所周知的网络原因，我们无法直接访问 [konachan.com](https://konachan.com) 和 [yande.re](https://yande.re)，所以脚本需要先下载图片，而不是让自建的 danbooru 直接去获取图片。
+因为众所周知的网络原因，我们无法直接访问 [konachan.com](https://konachan.com) 和 [yande.re](https://yande.re)，所以脚本需要先下载图片，而不是让自建的 danbooru 直接去获取图片（虽然 danbooru 也能用代理）。
 
 Screenshot of a self-hosting danbooru instance, with metadata of posts synced (see [todo](#TODO) for supported metadata):
 
@@ -42,6 +42,8 @@ Screenshot of a self-hosting danbooru instance, with metadata of posts synced (s
 Make sure `GNU make`, `curl`, `wget`,  `node`, and `yarn` are installed. Steps below are based on a unix-like OS. If you are using Windows, try WSL.
 
 确保你安装了 `GNU make`, `curl`, `wget`,  `node` 和 `yarn`。以下步骤基于类 Unix 系统，如果你使用 Windows 的话请尝试 WSL。
+
+If it is your first time running this script, run `yarn install` to install dependencies.
 
 1. Prepare environment variables 准备环境变量
 
@@ -81,6 +83,6 @@ Make sure `GNU make`, `curl`, `wget`,  `node`, and `yarn` are installed. Steps b
 ## TODO
 
 - [x] Sync images, tags, rating, and source
-- [ ] Sync metadata for tags
+- [x] Sync metadata for tags
 - [ ] Sync parent/child relationships
 - [ ] Sync pools
