@@ -43,7 +43,7 @@ Make sure `GNU make`, `curl`, `wget`,  `node`, and `yarn` are installed. Steps b
 
 确保你安装了 `GNU make`, `curl`, `wget`,  `node` 和 `yarn`。以下步骤基于类 Unix 系统，如果你使用 Windows 的话请尝试 WSL。
 
-If it is your first time running this script, run `yarn install` to install dependencies.
+If it is your first time running this script, run `yarn install` to install dependencies. 如果你是第一次使用这个脚本，请运行 `yarn install` 来安装依赖。
 
 1. Prepare environment variables 准备环境变量
 
@@ -76,9 +76,9 @@ If it is your first time running this script, run `yarn install` to install depe
 
 2. Start syncing 开始同步
 
-   - Run `make get_favorites_and_sync_to_danbooru` to download and sync your favorites to self-hosted danbooru.
-
-   - <p style="color: grey;">More actions will be added later after some testing...</p>
+   - Run `make get_favorites_and_sync_to_danbooru` to download and sync your favorites to self-hosted danbooru incrementally (tags will also be synced).
+   - Run `make get-and-update-tags-all` to sync tag metadata from moebooru to self-hosted danbooru. Since this is about tag metadata, not the tags of an image, you don't need to run this frequently (typically they won't change).
+   - More actions will be added later after some testing... You can read the targets in `Makefile` to see what they do.
 
 ## TODO
 

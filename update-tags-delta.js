@@ -1,4 +1,4 @@
-// update tags on you danbooru instance from your <host>-tags.json file
+// incrementally update tags on your danbooru instance from <host>-tags.json file
 
 const axios = require('axios').default
 const fs = require('fs');
@@ -134,4 +134,3 @@ async function updateTag(id, type, name) {
 
     saveProgress();
 })();
-
