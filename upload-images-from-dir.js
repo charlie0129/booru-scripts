@@ -89,24 +89,27 @@ process.on('SIGINT', function () {
     process.exit();
 });
 
-async function upLoadImage({ filePath, originalId }) {
+async function uploadImage({ filePath, originalId }) {
     try {
         if (!(filePath.endsWith(".jpg") || filePath.endsWith(".jpeg") || filePath.endsWith(".png"))) {
             throw new Error("not a jpg or png file");
         }
 
+        const stream = fs.createReadStream(filePath)
+        const { size } = fs.statSync(filePath);
         const form = new FormData();
-        form.append("upload[files][0]", fs.createReadStream(filePath));
+        form.append("upload[files][0]", stream, { knownLength: size });
         const response = await axios({
             method: 'post',
             url: `${localHost}uploads.json`,
             data: form,
             headers: {
-                'Content-Type': `multipart/form-data; boundary=${form._boundary}`,
-                authorization
+                ...form.getHeaders(),
+                authorization,
+                "Content-Length": form.getLengthSync(),
             },
             maxBodyLength: Infinity,
-            maxContentLength: Infinity
+            maxContentLength: Infinity,
         });
 
         if (response.status >= 400) {
@@ -179,7 +182,7 @@ async function startUploading() {
 
         let uploadId = uploaded[file.id]
         if (!uploadId) {
-            uploadId = await upLoadImage({ filePath: file.filePath, originalId: file.id });
+            uploadId = await uploadImage({ filePath: file.filePath, originalId: file.id });
         }
 
         let postId = posted[file.id]
